@@ -1,6 +1,14 @@
 # 🤖 Jarvis AI Assistant
 
-Een persoonlijke AI-assistent zoals Tony Stark's Jarvis, gebouwd met Python en Telegram.
+Een geavanceerde persoonlijke AI-assistent geïnspireerd door Tony Stark's Jarvis. Gebouwd met Python, Telegram Bot API, en Ollama AI integratie.
+
+**🚀 Features:**
+- Telegram bot interface
+- AI chat met Ollama modellen
+- Windows applicatie launcher
+- Screenshot functionaliteit
+- SQLite database logging
+- Notitie systeem
 
 ## 🚀 Snel starten
 
@@ -57,6 +65,31 @@ Voorbeeld: `ask wat is de hoofdstad van Frankrijk?`
 
 ### Geavanceerd
 - `nieuw project` - Open Cursor en maak nieuw project
+
+## 🛠️ Technologies Used
+
+**Backend:**
+- **Python** - Hoofdprogrammeertaal
+- **Telegram Bot API** - Bot interface
+- **SQLite** - Database voor logging en notities
+
+**AI & ML:**
+- **Ollama** - Lokale AI model server
+- **Llama 3.2, Qwen 2.5** - AI modellen
+
+**Libraries:**
+- `python-telegram-bot` - Telegram integratie
+- `pyautogui` - Screenshots en GUI automation
+- `requests` - HTTP API calls
+- `python-dotenv` - Environment variable management
+
+## 📊 Project Stats
+
+- **Status:** ✅ Production Ready
+- **Python Version:** 3.8+
+- **Database:** SQLite
+- **Deployment:** Local/PythonAnywhere/Heroku
+- **License:** MIT (opensource)
 
 ## 🧠 Ollama Setup (voor AI chat)
 
