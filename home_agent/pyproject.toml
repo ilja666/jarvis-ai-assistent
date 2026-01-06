@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "jarvis-home-agent"
+version = "0.1.0"
+description = "Jarvis AI Assistant - Home Agent Server"
+authors = ["Ilja"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.109.0"
+uvicorn = {extras = ["standard"], version = "^0.27.0"}
+python-dotenv = "^1.0.0"
+pydantic = "^2.5.0"
+pydantic-settings = "^2.1.0"
+pyautogui = "^0.9.54"
+pillow = "^10.2.0"
+pywinauto = "^0.6.8"
+paramiko = "^3.4.0"
+python-telegram-bot = "^20.7"
+requests = "^2.31.0"
+aiofiles = "^23.2.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

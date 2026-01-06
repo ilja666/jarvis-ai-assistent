@@ -1,130 +1,175 @@
-# 🤖 Jarvis AI Assistant
+# Jarvis AI Assistant
 
-Een geavanceerde persoonlijke AI-assistent geïnspireerd door Tony Stark's Jarvis. Gebouwd met Python, Telegram Bot API, en Ollama AI integratie.
+A modular personal AI assistant inspired by Tony Stark's Jarvis. Control your Windows PC, AI tools (Cursor, Claude, Grok), and Kali VM from your Android phone using natural language.
 
-**🚀 Features:**
-- Telegram bot interface
-- AI chat met Ollama modellen
-- Windows applicatie launcher
-- Screenshot functionaliteit
-- SQLite database logging
-- Notitie systeem
+## Features
 
-## 🚀 Snel starten
+- **Natural Language Control**: Just tell Jarvis what you want - no memorizing commands
+- **Modular Architecture**: Add/remove application modules as needed
+- **Telegram Interface**: Control from your phone via Telegram
+- **REST API**: Integrate with other tools via HTTP API
+- **AI-Powered**: Uses Ollama for intelligent request interpretation
+- **Full GUI Automation**: Screenshots, window control, keyboard/mouse
+- **Kali VM Integration**: SSH-based control of your Kali Linux VM
+- **Cursor IDE Control**: Project management, file creation, git operations
+- **Audit Logging**: All actions logged for security and debugging
 
-1. **Installeer dependencies:**
-   ```bash
-   pip install python-telegram-bot psutil pyautogui pillow python-dotenv requests
-   ```
+## Quick Start (New Modular Version)
 
-2. **Stel je bot token in:**
-   - Ga naar Telegram en zoek `@BotFather`
-   - Maak een nieuwe bot met `/newbot`
-   - Kopieer de token
-   - Plak hem in `.env`: `TELEGRAM_BOT_TOKEN=jouw_token_hier`
+### Prerequisites
 
-3. **Start Jarvis:**
-   ```bash
-   python jarvis_remote2.py
-   ```
+- Python 3.10+
+- Windows 11 (for GUI automation)
+- Ollama installed and running
+- Telegram Bot Token (from @BotFather)
+- Tailscale (for remote access from phone)
 
-4. **Activeer in Telegram:**
-   - Start een chat met je bot
-   - Typ `/start` (jij wordt automatisch eigenaar)
-   - Typ `help` voor alle commando's
-
-## 📱 Beschikbare commando's
-
-### Basis commando's
-- `status` - Toon huidige status en tijd
-- `screenshot` - Maak screenshot van je computer
-- `log` - Toon laatste 15 acties
-- `help` - Toon deze lijst
-
-### Apps openen (Windows)
-- `open chrome` - Google Chrome
-- `open firefox` - Firefox browser
-- `open edge` - Microsoft Edge
-- `open notepad` - Kladblok
-- `open calc` - Rekenmachine
-- `open code` - VS Code
-- `open cursor` - Cursor editor
-- `open word` - Microsoft Word
-- `open excel` - Microsoft Excel
-- `open cmd` - Command Prompt
-
-### Notities systeem
-- `note [tekst]` - Sla een notitie op
-- `notes` - Toon laatste 10 notities
-
-### AI Chat (vereist Ollama)
-- `ask [vraag]` - Stel vraag aan AI
-
-**Beschikbare modellen:** llama3.2, qwen2.5, llama2, dolphin-mistral
-Voorbeeld: `ask wat is de hoofdstad van Frankrijk?`
-
-### Geavanceerd
-- `nieuw project` - Open Cursor en maak nieuw project
-
-## 🛠️ Technologies Used
-
-**Backend:**
-- **Python** - Hoofdprogrammeertaal
-- **Telegram Bot API** - Bot interface
-- **SQLite** - Database voor logging en notities
-
-**AI & ML:**
-- **Ollama** - Lokale AI model server
-- **Llama 3.2, Qwen 2.5** - AI modellen
-
-**Libraries:**
-- `python-telegram-bot` - Telegram integratie
-- `pyautogui` - Screenshots en GUI automation
-- `requests` - HTTP API calls
-- `python-dotenv` - Environment variable management
-
-## 📊 Project Stats
-
-- **Status:** ✅ Production Ready
-- **Python Version:** 3.8+
-- **Database:** SQLite
-- **Deployment:** Local/PythonAnywhere/Heroku
-- **License:** MIT (opensource)
-
-## 🧠 Ollama Setup (voor AI chat)
-
-1. **Installeer Ollama:** https://ollama.ai/
-2. **Download model:**
-   ```bash
-   ollama pull llama3.2
-   ```
-3. **Start Ollama service:**
-   ```bash
-   ollama serve
-   ```
-
-## 🔧 Configuratie
-
-- `.env` - Bevat je bot token (niet naar Git!)
-- `config.py` - Laadt environment variabelen
-- `jarvis_log.db` - SQLite database voor logs en notities
-
-## 🛡️ Beveiliging
-
-- Alleen de eerste gebruiker die `/start` typt wordt eigenaar
-- Andere gebruikers krijgen "Toegang geweigerd"
-- Alle acties worden gelogd in de database
-
-## 📊 Logs bekijken
-
-Typ `log` in je bot om de laatste acties te zien, of bekijk direct in de database:
+### Installation
 
 ```bash
-sqlite3 jarvis_log.db
-.schema
-SELECT * FROM logs ORDER BY timestamp DESC LIMIT 10;
+cd home_agent
+pip install poetry
+poetry install
 ```
 
----
+### Configuration
 
-**Gemaakt met ❤️ voor AI-liefhebbers**
+```bash
+cp .env.example .env
+# Edit .env with your settings:
+# - TELEGRAM_BOT_TOKEN (required)
+# - KALI_HOST, KALI_PASSWORD (optional, for Kali VM)
+```
+
+### Running Jarvis
+
+```bash
+cd home_agent
+poetry run python run_agent.py
+```
+
+This starts both the API server (port 8000) and Telegram bot.
+
+To run only one component:
+```bash
+# API only
+JARVIS_MODE=api poetry run python run_agent.py
+
+# Telegram only
+JARVIS_MODE=telegram poetry run python run_agent.py
+```
+
+## Usage
+
+### Telegram (Natural Language)
+
+Just message your bot naturally:
+
+- "Take a screenshot"
+- "Open Chrome"
+- "What's the system status?"
+- "Create a new Python project called myapp"
+- "Check if Kali is connected"
+- "Save a note: remember to update the docs"
+
+### API Endpoints
+
+```bash
+# Send natural language message
+curl -X POST http://localhost:8000/message \
+  -H "Content-Type: application/json" \
+  -d '{"message": "take a screenshot"}'
+
+# Execute specific action
+curl -X POST http://localhost:8000/action \
+  -H "Content-Type: application/json" \
+  -d '{"capability": "system.screenshot", "params": {}}'
+
+# List all modules
+curl http://localhost:8000/modules
+
+# List all capabilities
+curl http://localhost:8000/capabilities
+```
+
+## Modules
+
+| Module | Description | Key Capabilities |
+|--------|-------------|------------------|
+| system | Screenshots, status, notes | screenshot, status, add_note, list_windows |
+| windows | App control, keyboard/mouse | open_app, close_app, type_text, press_key |
+| cursor | Cursor IDE integration | open, create_project, git_status, git_commit |
+| kali | Kali VM via SSH | run_command, check_connection, list_tools |
+
+## Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐
+│  Telegram Bot   │     │   REST API      │
+└────────┬────────┘     └────────┬────────┘
+         │                       │
+         └───────────┬───────────┘
+                     │
+              ┌──────▼──────┐
+              │     AI      │
+              │ Interpreter │
+              └──────┬──────┘
+                     │
+              ┌──────▼──────┐
+              │  Dispatcher │
+              └──────┬──────┘
+                     │
+    ┌────────┬───────┼───────┬────────┐
+    │        │       │       │        │
+┌───▼──┐ ┌───▼──┐ ┌──▼──┐ ┌──▼──┐ ┌───▼───┐
+│System│ │Windows│ │Cursor│ │Kali│ │ More  │
+│Module│ │Module │ │Module│ │SSH │ │Modules│
+└──────┘ └───────┘ └──────┘ └────┘ └───────┘
+```
+
+## Remote Access with Tailscale
+
+1. Install Tailscale on your Windows PC and Android phone
+2. Login to the same Tailscale account on both
+3. Your PC gets an IP like `100.x.x.x`
+4. Access the API from your phone: `http://100.x.x.x:8000`
+
+## Kali VM Setup
+
+1. In your Kali VM, enable SSH:
+   ```bash
+   sudo systemctl start ssh
+   sudo systemctl enable ssh
+   ip a  # Note the IP address
+   ```
+
+2. Add to your `.env`:
+   ```
+   KALI_HOST=192.168.x.x
+   KALI_USER=kali
+   KALI_PASSWORD=your_password
+   ```
+
+## Security
+
+- First Telegram user to `/start` becomes the owner
+- All actions are logged with timestamps
+- Dangerous actions require confirmation
+- Kali commands require explicit confirmation
+
+## Legacy Version
+
+The original command-based bot is still available in `jarvis_remote2.py` if you prefer predetermined commands over natural language.
+
+## Tech Stack
+
+- **FastAPI** - REST API server
+- **python-telegram-bot** - Telegram integration
+- **Ollama** - Local AI for natural language understanding
+- **pyautogui/pywinauto** - GUI automation
+- **paramiko** - SSH for Kali VM
+- **SQLite** - Audit logging and notes
+
+## License
+
+MIT
