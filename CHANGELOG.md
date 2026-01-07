@@ -6,6 +6,8 @@ Jarvis AI Assistant - Version History
 
 ## Devin AI - 2026-01-07 19:08
 
+MOTIVATION: The original command-based Telegram bot required users to memorize specific commands. User requested a pure natural language system where you can just talk to Jarvis and it figures out what to do. This required a complete architectural overhaul with a modular plugin system.
+
 - Added modular plugin architecture with AI-driven natural language control
 - Created Home Agent FastAPI server with REST API endpoints
 - Implemented AI interpreter using Ollama for natural language understanding
@@ -26,6 +28,8 @@ NOTE: Initial release of modular architecture. Replaces command-based system wit
 ---
 
 ## Devin AI - 2026-01-07 19:08
+
+MOTIVATION: User testing revealed several bugs: confirmation flow kept asking for confirmation even after user said "yes", AI interpreter sometimes returned invalid capability format causing errors, and the AI was confusing previous requests with current ones (context drift).
 
 - Fixed confirmation flow bug (double confirmation loop)
 - Added capability format validation to fix "windows" vs "windows.open_app" errors
