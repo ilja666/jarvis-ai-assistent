@@ -96,7 +96,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             del PENDING_CONFIRMATIONS[user_id]
             
             from app.core.registry import dispatcher
-            result = await dispatcher.dispatch(pending["capability"], pending["params"])
+            result = await dispatcher.dispatch(pending["capability"], pending["params"], skip_confirmation=True)
             
             audit_log.log_action(
                 module="telegram",

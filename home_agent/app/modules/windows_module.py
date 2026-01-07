@@ -36,6 +36,18 @@ class WindowsModule(ModuleBase):
         "taskmgr": "taskmgr.exe",
         "control": "control.exe",
         "settings": "ms-settings:",
+        "android studio": r"C:\Program Files\Android\Android Studio\bin\studio64.exe",
+        "androidstudio": r"C:\Program Files\Android\Android Studio\bin\studio64.exe",
+        "claude": r"C:\Users\Ilja\AppData\Local\Programs\claude-desktop\Claude.exe",
+        "claude desktop": r"C:\Users\Ilja\AppData\Local\Programs\claude-desktop\Claude.exe",
+        "telegram": r"C:\Users\Ilja\AppData\Roaming\Telegram Desktop\Telegram.exe",
+        "telegram desktop": r"C:\Users\Ilja\AppData\Roaming\Telegram Desktop\Telegram.exe",
+        "discord": r"C:\Users\Ilja\AppData\Local\Discord\Update.exe --processStart Discord.exe",
+        "spotify": r"C:\Users\Ilja\AppData\Roaming\Spotify\Spotify.exe",
+        "slack": r"C:\Users\Ilja\AppData\Local\slack\slack.exe",
+        "teams": r"C:\Users\Ilja\AppData\Local\Microsoft\Teams\Update.exe --processStart Teams.exe",
+        "virtualbox": r"C:\Program Files\Oracle\VirtualBox\VirtualBox.exe",
+        "vbox": r"C:\Program Files\Oracle\VirtualBox\VirtualBox.exe",
     }
     
     def _register_capabilities(self) -> None:

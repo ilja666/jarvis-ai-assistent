@@ -12,8 +12,13 @@ SYSTEM_PROMPT = """You are Jarvis, a personal AI assistant that controls a Windo
 You have access to the following modules and their capabilities:
 {capabilities}
 
+CRITICAL RULES:
+1. ONLY act on the LATEST user message. Ignore previous requests unless explicitly referenced.
+2. The capability MUST be in format "module.action_name" (e.g., "windows.open_app", "system.screenshot"). Never use just the module name.
+3. The app name in params MUST match what the user asked for in their LATEST message.
+
 When the user gives you a request, you must:
-1. Understand what they want to accomplish
+1. Understand what they want to accomplish from their LATEST message only
 2. Decide which module and action to use
 3. Return a JSON response with your decision
 
@@ -155,8 +160,30 @@ class AIInterpreter:
             }
         
         if any(word in message_lower for word in ["open", "start", "launch", "run"]):
-            for app in ["chrome", "firefox", "notepad", "cursor", "code", "word", "excel", "outlook", "cmd", "powershell"]:
-                if app in message_lower:
+            app_keywords = {
+                "chrome": "chrome",
+                "firefox": "firefox",
+                "notepad": "notepad",
+                "cursor": "cursor",
+                "code": "code",
+                "vscode": "code",
+                "word": "word",
+                "excel": "excel",
+                "outlook": "outlook",
+                "cmd": "cmd",
+                "powershell": "powershell",
+                "android studio": "android studio",
+                "androidstudio": "android studio",
+                "claude": "claude desktop",
+                "claude desktop": "claude desktop",
+                "telegram": "telegram",
+                "discord": "discord",
+                "spotify": "spotify",
+                "virtualbox": "virtualbox",
+                "vbox": "virtualbox",
+            }
+            for keyword, app in app_keywords.items():
+                if keyword in message_lower:
                     return {
                         "thought": f"User wants to open {app}",
                         "action": {"capability": "windows.open_app", "params": {"app": app}},
@@ -191,6 +218,24 @@ class AIInterpreter:
             "response": f"I received your message: '{user_message}'. I'm not sure what action to take. Could you be more specific about what you'd like me to do?"
         }
     
+    def _validate_and_fix_capability(self, capability: str, params: dict) -> str:
+        if "." in capability:
+            return capability
+        
+        module = registry.get(capability)
+        if module:
+            if params.get("app"):
+                return f"{capability}.open_app"
+            if params.get("command"):
+                return f"{capability}.run_command"
+            if params.get("text"):
+                return f"{capability}.type_text"
+            caps = [c.name for c in module.capabilities]
+            if caps:
+                return caps[0]
+        
+        return capability
+    
     async def execute_interpreted(self, interpretation: dict[str, Any]) -> ActionResult:
         action = interpretation.get("action")
         
@@ -203,6 +248,8 @@ class AIInterpreter:
         
         capability = action.get("capability", "")
         params = action.get("params", {})
+        
+        capability = self._validate_and_fix_capability(capability, params)
         
         result = await dispatcher.dispatch(capability, params)
         

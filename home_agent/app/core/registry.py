@@ -53,7 +53,7 @@ class Dispatcher:
     def __init__(self, registry: ModuleRegistry):
         self.registry = registry
     
-    async def dispatch(self, capability: str, params: dict) -> ActionResult:
+    async def dispatch(self, capability: str, params: dict, skip_confirmation: bool = False) -> ActionResult:
         result = self.registry.find_capability(capability)
         
         if result is None:
@@ -65,7 +65,7 @@ class Dispatcher:
         module, action = result
         
         cap = module.get_capability(capability)
-        if cap and cap.requires_confirmation:
+        if cap and cap.requires_confirmation and not skip_confirmation:
             return ActionResult(
                 status=ActionStatus.REQUIRES_CONFIRMATION,
                 message=f"Action '{capability}' requires confirmation",
